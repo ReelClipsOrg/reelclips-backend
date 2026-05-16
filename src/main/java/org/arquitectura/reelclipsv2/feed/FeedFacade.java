@@ -1,7 +1,6 @@
 package org.arquitectura.reelclipsv2.feed;
 
 import lombok.RequiredArgsConstructor;
-import org.arquitectura.reelclipsv2.categorias.internal.repository.ICategoriaRepository;
 import org.arquitectura.reelclipsv2.feed.api.dto.FeedResponse;
 import org.arquitectura.reelclipsv2.feed.internal.service.ServicioFiltroVisibilidad;
 import org.arquitectura.reelclipsv2.feed.internal.service.ServicioPaginacion;
@@ -17,7 +16,6 @@ import java.util.List;
 public class FeedFacade {
 
     private final IReelRepository reelRepo;
-    private final ICategoriaRepository categoriaRepo;
     private final ServicioFiltroVisibilidad filtroVisibilidad;
     private final ServicioPaginacion paginacion;
     private final ReelService reelService;
