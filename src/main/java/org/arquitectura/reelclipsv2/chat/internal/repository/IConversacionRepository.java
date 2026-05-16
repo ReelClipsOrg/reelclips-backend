@@ -1,0 +1,15 @@
+package org.arquitectura.reelclipsv2.chat.internal.repository;
+
+import org.arquitectura.reelclipsv2.chat.internal.model.Conversacion;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+
+import java.util.Optional;
+
+public interface IConversacionRepository extends JpaRepository<Conversacion, Long> {
+
+    @Query("SELECT c FROM Conversacion c WHERE " +
+            "(c.usuario1.id = :u1 AND c.usuario2.id = :u2) OR " +
+            "(c.usuario1.id = :u2 AND c.usuario2.id = :u1)")
+    Optional<Conversacion> findEntreUsuarios(Long u1, Long u2);
+}
