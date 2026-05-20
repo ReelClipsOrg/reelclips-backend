@@ -8,7 +8,6 @@ import org.arquitectura.reelclipsv2.interacciones.internal.model.Reaccion;
 import org.arquitectura.reelclipsv2.interacciones.internal.observer.PublicadorEventosInteraccion;
 import org.arquitectura.reelclipsv2.interacciones.internal.repository.IComentarioRepository;
 import org.arquitectura.reelclipsv2.interacciones.internal.repository.IReaccionRepository;
-import org.arquitectura.reelclipsv2.reels.api.IReelModuloApi;
 import org.arquitectura.reelclipsv2.reels.internal.model.Reel;
 import org.arquitectura.reelclipsv2.reels.internal.repository.IReelRepository;
 import org.arquitectura.reelclipsv2.shared.exception.RecursoNoEncontradoException;
@@ -30,7 +29,6 @@ public class InteraccionService {
     private final IReelRepository reelRepo;
     private final IUsuarioRepository usuarioRepo;
     private final IUsuarioModuloApi usuarioModuloApi;
-    private final IReelModuloApi reelModuloApi;
     private final PublicadorEventosInteraccion publicador;
 
     // RF-12 Reaccionar
