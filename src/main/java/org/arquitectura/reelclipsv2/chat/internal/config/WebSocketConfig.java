@@ -17,6 +17,8 @@ import java.util.Map;
 @EnableWebSocketMessageBroker
 public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
+    private static final String FRONTEND_PROD = "https://reelclips-frontend.vercel.app";
+    private static final String FRONTEND_LOCAL = "http://localhost:3000";
 
     @Override
     public void configureMessageBroker(MessageBrokerRegistry registry) {
@@ -34,13 +36,13 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
     public void registerStompEndpoints(StompEndpointRegistry registry) {
         // Con SockJS (para el frontend)
         registry.addEndpoint("/ws-chat")
-                .setAllowedOriginPatterns("*")
+                .setAllowedOrigins(FRONTEND_PROD, FRONTEND_LOCAL)
                 .setHandshakeHandler(usuarioIdHandshakeHandler())
                 .withSockJS();
 
         // Sin SockJS (para pruebas con Hoppscotch, Postman, wscat)
         registry.addEndpoint("/ws-chat-native")
-                .setAllowedOriginPatterns("*")
+                .setAllowedOrigins(FRONTEND_PROD, FRONTEND_LOCAL)
                 .setHandshakeHandler(usuarioIdHandshakeHandler());
     }
 
