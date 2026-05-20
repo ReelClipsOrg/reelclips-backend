@@ -453,7 +453,7 @@ src/main/resources/application.properties
 Ese archivo lee directamente las variables de entorno. No define valores por defecto:
 
 ```properties
-server.port=8082
+server.port=${PORT:8082}
 
 spring.datasource.url=${DB_URL}
 spring.datasource.username=${DB_USERNAME}
@@ -624,6 +624,75 @@ spring.jpa.hibernate.ddl-auto=update
 ```
 
 Por tanto, las tablas se crean o actualizan automáticamente al iniciar la aplicación, siempre que PostgreSQL esté disponible y las credenciales sean correctas.
+
+---
+
+## Despliegue en Render
+
+Render no usa el archivo `.env` del repositorio. Las variables se configuran desde el dashboard del servicio.
+
+### 1. Crear la base de datos
+
+1. En Render, crea un servicio **PostgreSQL**.
+2. Guarda estos datos de conexión:
+   - host
+   - puerto
+   - database
+   - user
+   - password
+
+Para `DB_URL`, usa el formato JDBC:
+
+```properties
+DB_URL=jdbc:postgresql://HOST:PORT/DATABASE
+```
+
+Render también muestra URLs tipo `postgresql://...`; esas no van directamente en `DB_URL` porque Spring espera una URL JDBC.
+
+### 2. Crear el Web Service
+
+1. Crea un **Web Service** desde el repositorio de GitHub.
+2. Selecciona runtime **Docker**.
+3. Render usará el `Dockerfile` del repositorio.
+4. Configura las variables de entorno:
+
+```properties
+DB_URL=jdbc:postgresql://HOST:PORT/DATABASE
+DB_USERNAME=usuario_render
+DB_PASSWORD=password_render
+
+SUPABASE_URL=https://tu-proyecto.supabase.co
+SUPABASE_KEY=tu_supabase_key
+SUPABASE_BUCKET_REELS=reels
+SUPABASE_BUCKET_IMAGENES=imagenes-perfil
+```
+
+No configures `PORT` manualmente. Render lo asigna automáticamente y la app lo lee con:
+
+```properties
+server.port=${PORT:8082}
+```
+
+### 3. Verificar despliegue
+
+Cuando el deploy termine, abre:
+
+```text
+https://TU-SERVICIO.onrender.com/swagger-ui.html
+```
+
+También puedes validar la documentación OpenAPI:
+
+```text
+https://TU-SERVICIO.onrender.com/v3/api-docs
+```
+
+### Notas de producción
+
+- No subas `.env`; configura secretos en Render.
+- Para una demo, `spring.jpa.hibernate.ddl-auto=update` es suficiente.
+- Para producción real, conviene reemplazar `ddl-auto=update` por migraciones con Flyway o Liquibase.
+- Si el frontend consume este backend desde otro dominio, revisa CORS antes de conectar el cliente.
 
 ---
 
