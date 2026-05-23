@@ -1,7 +1,6 @@
 package org.arquitectura.reelclipsv2.reels.internal.service;
 
 import lombok.RequiredArgsConstructor;
-import org.arquitectura.reelclipsv2.categorias.api.ICategoriaModuloApi;
 import org.arquitectura.reelclipsv2.categorias.internal.model.Categoria;
 import org.arquitectura.reelclipsv2.categorias.internal.repository.ICategoriaRepository;
 import org.arquitectura.reelclipsv2.reels.api.dto.ReelInfo;
@@ -12,7 +11,6 @@ import org.arquitectura.reelclipsv2.shared.enums.EstadoReel;
 import org.arquitectura.reelclipsv2.shared.exception.AccesoDenegadoException;
 import org.arquitectura.reelclipsv2.shared.exception.RecursoNoEncontradoException;
 import org.arquitectura.reelclipsv2.shared.exception.ReglaNegocioException;
-import org.arquitectura.reelclipsv2.usuarios.api.IUsuarioModuloApi;
 import org.arquitectura.reelclipsv2.usuarios.internal.model.Canal;
 import org.arquitectura.reelclipsv2.usuarios.internal.repository.ICanalRepository;
 import org.springframework.stereotype.Service;
