@@ -7,14 +7,16 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import lombok.RequiredArgsConstructor;
 import org.arquitectura.reelclipsv2.usuarios.api.dto.PerfilInfo;
 import org.arquitectura.reelclipsv2.usuarios.api.dto.UsuarioInfo;
 import org.arquitectura.reelclipsv2.usuarios.internal.service.UsuarioService;
-import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/usuarios")
@@ -26,7 +28,7 @@ public class UsuarioController {
 
     @Operation(
             summary = "Registrar usuario",
-            description = "RF-01 / RN-01 / RN-03 — Crea una cuenta nueva con username único, email y contraseña. " +
+            description = "RF-01 / RN-01 / RN-03 - Crea una cuenta nueva con username único, email y contraseña. " +
                     "Genera automáticamente un canal personal asociado al usuario.",
             responses = {
                     @ApiResponse(responseCode = "200", description = "Usuario registrado exitosamente"),
@@ -46,7 +48,7 @@ public class UsuarioController {
 
     @Operation(
             summary = "Iniciar sesión",
-            description = "RF-02 — Autentica al usuario con email y contraseña. " +
+            description = "RF-02 - Autentica al usuario con email y contraseña. " +
                     "Retorna los datos del usuario si las credenciales son correctas.",
             responses = {
                     @ApiResponse(responseCode = "200", description = "Sesión iniciada exitosamente"),
@@ -65,7 +67,7 @@ public class UsuarioController {
 
     @Operation(
             summary = "Ver perfil",
-            description = "RF-05 — Retorna el perfil público de cualquier usuario: " +
+            description = "RF-05 - Retorna el perfil público de cualquier usuario: " +
                     "username, nombre de visualización, foto y descripción.",
             responses = {
                     @ApiResponse(responseCode = "200", description = "Perfil encontrado"),
@@ -80,8 +82,19 @@ public class UsuarioController {
     }
 
     @Operation(
+            summary = "Listar perfiles públicos",
+            description = "Retorna todos los perfiles públicos de usuarios con cuenta activa, excluyendo al usuario solicitante."
+    )
+    @GetMapping("/perfiles-publicos")
+    public ResponseEntity<List<PerfilInfo>> listarPerfilesPublicos(
+            @Parameter(description = "ID del usuario que consulta", required = true)
+            @RequestParam Long usuarioId) {
+        return ResponseEntity.ok(service.listarPerfilesPublicos(usuarioId));
+    }
+
+    @Operation(
             summary = "Editar perfil",
-            description = "RF-04 — Actualiza nombre de visualización, URL de foto y descripción. " +
+            description = "RF-04 - Actualiza nombre de visualización, URL de foto y descripción. " +
                     "Para subir una nueva foto de perfil usa el endpoint POST /{id}/foto.",
             responses = {
                     @ApiResponse(responseCode = "200", description = "Perfil actualizado exitosamente"),
@@ -103,7 +116,7 @@ public class UsuarioController {
 
     @Operation(
             summary = "Subir foto de perfil",
-            description = "RF-04 — Sube una imagen a Supabase Storage y actualiza la URL de la foto de perfil. " +
+            description = "RF-04 - Sube una imagen a Supabase Storage y actualiza la URL de la foto de perfil. " +
                     "Si ya existe una foto previa, la elimina de Supabase antes de subir la nueva.",
             requestBody = @RequestBody(
                     required = true,
@@ -129,7 +142,7 @@ public class UsuarioController {
 
     @Operation(
             summary = "Cambiar username",
-            description = "RF-04 / RN-04 — Cambia el nombre de usuario. " +
+            description = "RF-04 / RN-04 - Cambia el nombre de usuario. " +
                     "Solo está permitido una vez cada 30 días para preservar la trazabilidad de la identidad.",
             responses = {
                     @ApiResponse(responseCode = "200", description = "Username actualizado exitosamente"),
@@ -148,7 +161,7 @@ public class UsuarioController {
 
     @Operation(
             summary = "Desactivar cuenta",
-            description = "RF-06 / RN-05 — Desactiva la cuenta del usuario. " +
+            description = "RF-06 / RN-05 - Desactiva la cuenta del usuario. " +
                     "Los reels y mensajes se conservan durante 30 días antes de eliminarse permanentemente, " +
                     "permitiendo la recuperación de la cuenta en ese intervalo.",
             responses = {
@@ -164,7 +177,6 @@ public class UsuarioController {
         return ResponseEntity.noContent().build();
     }
 
-    // Schema auxiliar para documentar el multipart en Swagger
     @Schema(name = "SubirFotoRequest", description = "Datos requeridos para subir foto de perfil")
     static class SubirFotoRequest {
         @Schema(description = "Archivo de imagen (jpg, png, webp)", type = "string", format = "binary")
