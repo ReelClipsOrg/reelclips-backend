@@ -108,6 +108,16 @@ trim() {
 scriptDir="$(dirname "$0")"
 scriptName="$(basename "$0")"
 
+if [ -f "$scriptDir/.mvn/jdk-home.txt" ]; then
+  JAVA_HOME="$(cat "$scriptDir/.mvn/jdk-home.txt")"
+elif [ -x "/usr/lib/jvm/java-17-openjdk/bin/java" ]; then
+  JAVA_HOME="/usr/lib/jvm/java-17-openjdk"
+elif [ -x "/usr/lib/jvm/java-17-openjdk-amd64/bin/java" ]; then
+  JAVA_HOME="/usr/lib/jvm/java-17-openjdk-amd64"
+elif [ -x "/Library/Java/JavaVirtualMachines/jdk-17.jdk/Contents/Home/bin/java" ]; then
+  JAVA_HOME="/Library/Java/JavaVirtualMachines/jdk-17.jdk/Contents/Home"
+fi
+
 # parse distributionUrl and optional distributionSha256Sum, requires .mvn/wrapper/maven-wrapper.properties
 while IFS="=" read -r key value; do
   case "${key-}" in

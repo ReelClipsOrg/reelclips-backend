@@ -5,6 +5,7 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.arquitectura.reelclipsv2.feed.FeedFacade;
 import org.arquitectura.reelclipsv2.feed.api.dto.FeedResponse;
+import org.arquitectura.reelclipsv2.shared.exception.ReglaNegocioException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -30,6 +31,9 @@ public class FeedController {
             @Parameter(description = "ID del usuario autenticado") @RequestParam Long usuarioId,
             @Parameter(description = "Lista de nombres de categorías para filtrar (opcional)") @RequestParam(required = false) List<String> categorias,
             @Parameter(description = "Número de página (empieza en 0)") @RequestParam(defaultValue = "0") int pagina) {
+        if (pagina < 0) {
+            throw new ReglaNegocioException("El numero de pagina no puede ser negativo");
+        }
         return ResponseEntity.ok(feedFacade.obtenerFeed(usuarioId, categorias, pagina));
     }
 }

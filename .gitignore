@@ -42,6 +42,7 @@ application-local.properties
 
 # Variables de entorno sensibles
 .env
+.mvn/jdk-home.txt
 
 # OS
 .DS_Store

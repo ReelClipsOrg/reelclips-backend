@@ -77,7 +77,7 @@ public class UsuarioService {
     public UsuarioInfo subirFotoPerfil(Long id, MultipartFile archivo) {
         Usuario usuario = buscar(id);
         if (usuario.getFotoPerfil() != null && !usuario.getFotoPerfil().isBlank()) {
-            storageService.eliminar(usuario.getFotoPerfil(), "imagenes-perfil");
+            storageService.eliminarImagenPerfil(usuario.getFotoPerfil());
         }
         String url = storageService.subirImagenPerfil(archivo);
         usuario.setFotoPerfil(url);
@@ -108,7 +108,7 @@ public class UsuarioService {
             throw new AccesoDenegadoException("Debes tener una cuenta activa para consultar perfiles públicos");
         }
 
-        return usuarioRepo.findByEstadoCuentaExcludeThatId(EstadoCuenta.ACTIVA, usuarioId)
+        return usuarioRepo.findByEstadoCuentaAndIdNot(EstadoCuenta.ACTIVA, usuarioId)
                 .stream()
                 .map(this::toPerfilInfo)
                 .toList();

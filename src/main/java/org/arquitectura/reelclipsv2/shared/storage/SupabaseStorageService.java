@@ -39,8 +39,16 @@ public class SupabaseStorageService {
         return subir(archivo, bucketImagenes, archivo.getContentType());
     }
 
+    public void eliminarVideo(String url) {
+        eliminar(url, bucketReels);
+    }
+
+    public void eliminarImagenPerfil(String url) {
+        eliminar(url, bucketImagenes);
+    }
+
     // Eliminar archivo
-    public void eliminar(String url, String bucket) {
+    private void eliminar(String url, String bucket) {
         String nombreArchivo = extraerNombreArchivo(url);
         webClient.delete()
                 .uri(supabaseUrl + "/storage/v1/object/" + bucket + "/" + nombreArchivo)

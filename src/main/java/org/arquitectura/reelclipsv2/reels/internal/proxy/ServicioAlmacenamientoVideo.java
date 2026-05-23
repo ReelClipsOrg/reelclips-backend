@@ -34,6 +34,6 @@ public class ServicioAlmacenamientoVideo {
     }
 
     public void eliminar(String urlVideo) {
-        storageService.eliminar(urlVideo, "reels");
+        storageService.eliminarVideo(urlVideo);
     }
 }
