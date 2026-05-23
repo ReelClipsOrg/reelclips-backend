@@ -27,8 +27,6 @@ public class ReelService {
     private final IReelRepository reelRepo;
     private final ICanalRepository canalRepo;
     private final ICategoriaRepository categoriaRepo;
-    private final ICategoriaModuloApi categoriaModuloApi;
-    private final IUsuarioModuloApi usuarioModuloApi;
     private final CacheVideo cache;
 
     // RF-07 Publicacion
