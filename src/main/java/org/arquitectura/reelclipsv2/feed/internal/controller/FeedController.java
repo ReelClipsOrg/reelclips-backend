@@ -3,7 +3,7 @@ package org.arquitectura.reelclipsv2.feed.internal.controller;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.arquitectura.reelclipsv2.feed.FeedFacade;
+import org.arquitectura.reelclipsv2.feed.api.FeedFacade;
 import org.arquitectura.reelclipsv2.feed.api.dto.FeedResponse;
 import org.arquitectura.reelclipsv2.shared.exception.ReglaNegocioException;
 import lombok.RequiredArgsConstructor;

@@ -1,4 +1,4 @@
-package org.arquitectura.reelclipsv2.interacciones;
+package org.arquitectura.reelclipsv2.interacciones.api;
 
 import lombok.RequiredArgsConstructor;
 import org.arquitectura.reelclipsv2.interacciones.api.dto.InteraccionInfo;

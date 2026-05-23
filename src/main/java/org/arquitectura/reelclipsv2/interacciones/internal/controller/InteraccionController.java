@@ -2,7 +2,7 @@ package org.arquitectura.reelclipsv2.interacciones.internal.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.arquitectura.reelclipsv2.interacciones.InteraccionesFacade;
+import org.arquitectura.reelclipsv2.interacciones.api.InteraccionesFacade;
 import org.arquitectura.reelclipsv2.interacciones.api.dto.InteraccionInfo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

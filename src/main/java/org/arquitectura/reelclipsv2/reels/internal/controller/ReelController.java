@@ -7,11 +7,9 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.arquitectura.reelclipsv2.reels.api.ReelsFacade;
 import org.arquitectura.reelclipsv2.reels.api.dto.ReelInfo;
-import org.arquitectura.reelclipsv2.reels.internal.proxy.ProxyReel;
-import org.arquitectura.reelclipsv2.reels.internal.proxy.ServicioAlmacenamientoVideo;
 import org.arquitectura.reelclipsv2.reels.internal.proxy.VideoStream;
-import org.arquitectura.reelclipsv2.reels.internal.service.ReelService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -25,9 +23,7 @@ import java.util.List;
 @Tag(name = "Reels", description = "Publicación, edición, eliminación y visualización de reels")
 public class ReelController {
 
-    private final ReelService service;
-    private final ProxyReel proxyReel;
-    private final ServicioAlmacenamientoVideo servicioAlmacenamientoVideo;
+    private final ReelsFacade facade;
 
     @Operation(
             summary = "Publicar reel",
@@ -61,10 +57,8 @@ public class ReelController {
             @RequestParam double tamanoMB,
             @Parameter(description = "IDs de las categorías asignadas (mínimo 1)", required = true)
             @RequestParam List<Long> categoriaIds) {
-
-        String urlVideo = servicioAlmacenamientoVideo.guardar(video);
         return ResponseEntity.ok(
-                service.publicar(usuarioId, urlVideo, descripcion,
+                facade.publicar(usuarioId, video, descripcion,
                         duracionSegundos, tamanoMB, categoriaIds));
     }
 
@@ -89,7 +83,7 @@ public class ReelController {
             @RequestParam String descripcion,
             @Parameter(description = "Nuevos IDs de categorías (mínimo 1)", required = true)
             @RequestParam List<Long> categoriaIds) {
-        return ResponseEntity.ok(service.editar(reelId, usuarioId, descripcion, categoriaIds));
+        return ResponseEntity.ok(facade.editar(reelId, usuarioId, descripcion, categoriaIds));
     }
 
     @Operation(
@@ -108,7 +102,7 @@ public class ReelController {
             @PathVariable Long reelId,
             @Parameter(description = "ID del usuario propietario", required = true)
             @RequestParam Long usuarioId) {
-        service.eliminar(reelId, usuarioId);
+        facade.eliminar(reelId, usuarioId);
         return ResponseEntity.noContent().build();
     }
 
@@ -124,7 +118,7 @@ public class ReelController {
     public ResponseEntity<ReelInfo> buscar(
             @Parameter(description = "ID del reel", required = true)
             @PathVariable Long id) {
-        return ResponseEntity.ok(service.buscarPorId(id));
+        return ResponseEntity.ok(facade.buscarPorId(id));
     }
 
     @Operation(
@@ -137,7 +131,7 @@ public class ReelController {
     )
     @GetMapping
     public ResponseEntity<List<ReelInfo>> listarPublicos() {
-        return ResponseEntity.ok(service.listarPublicos());
+        return ResponseEntity.ok(facade.listarPublicos());
     }
 
     @Operation(
@@ -157,7 +151,7 @@ public class ReelController {
             @PathVariable Long reelId,
             @Parameter(description = "ID del usuario que solicita el stream", required = true)
             @RequestParam Long usuarioId) {
-        return ResponseEntity.ok(proxyReel.obtenerStream(reelId, usuarioId));
+        return ResponseEntity.ok(facade.obtenerStream(reelId, usuarioId));
     }
 
     @Operation(
@@ -173,7 +167,7 @@ public class ReelController {
     public ResponseEntity<List<ReelInfo>> porCanal(
             @Parameter(description = "ID del canal", required = true)
             @PathVariable Long canalId) {
-        return ResponseEntity.ok(service.listarPorCanal(canalId));
+        return ResponseEntity.ok(facade.listarPorCanal(canalId));
     }
 
     // Schema auxiliar para documentar el multipart en Swagger

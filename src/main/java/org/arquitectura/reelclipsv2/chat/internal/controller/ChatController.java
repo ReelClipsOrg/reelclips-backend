@@ -3,7 +3,7 @@ package org.arquitectura.reelclipsv2.chat.internal.controller;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
-import org.arquitectura.reelclipsv2.chat.ChatFacade;
+import org.arquitectura.reelclipsv2.chat.api.ChatFacade;
 import org.arquitectura.reelclipsv2.chat.api.dto.ConversacionInfo;
 import org.arquitectura.reelclipsv2.chat.api.dto.MensajeInfo;
 import org.springframework.http.ResponseEntity;

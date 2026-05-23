@@ -1,4 +1,4 @@
-package org.arquitectura.reelclipsv2.chat;
+package org.arquitectura.reelclipsv2.chat.api;
 
 import lombok.RequiredArgsConstructor;
 import org.arquitectura.reelclipsv2.chat.api.dto.ConversacionInfo;

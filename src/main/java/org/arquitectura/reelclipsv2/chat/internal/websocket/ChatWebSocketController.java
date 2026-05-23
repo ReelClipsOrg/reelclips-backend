@@ -2,7 +2,7 @@ package org.arquitectura.reelclipsv2.chat.internal.websocket;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.arquitectura.reelclipsv2.chat.ChatFacade;
+import org.arquitectura.reelclipsv2.chat.api.ChatFacade;
 import org.arquitectura.reelclipsv2.chat.api.dto.MensajeInfo;
 import org.arquitectura.reelclipsv2.shared.exception.AccesoDenegadoException;
 import org.arquitectura.reelclipsv2.shared.exception.RecursoNoEncontradoException;

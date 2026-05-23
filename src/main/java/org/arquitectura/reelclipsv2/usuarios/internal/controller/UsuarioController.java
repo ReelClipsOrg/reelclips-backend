@@ -8,9 +8,9 @@ import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.arquitectura.reelclipsv2.usuarios.api.UsuariosFacade;
 import org.arquitectura.reelclipsv2.usuarios.api.dto.PerfilInfo;
 import org.arquitectura.reelclipsv2.usuarios.api.dto.UsuarioInfo;
-import org.arquitectura.reelclipsv2.usuarios.internal.service.UsuarioService;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -24,7 +24,7 @@ import java.util.List;
 @Tag(name = "Usuarios", description = "Registro, autenticación y gestión de perfiles")
 public class UsuarioController {
 
-    private final UsuarioService service;
+    private final UsuariosFacade facade;
 
     @Operation(
             summary = "Registrar usuario",
@@ -43,7 +43,7 @@ public class UsuarioController {
             @RequestParam String email,
             @Parameter(description = "Contraseña", required = true)
             @RequestParam String password) {
-        return ResponseEntity.ok(service.registrar(username, email, password));
+        return ResponseEntity.ok(facade.registrar(username, email, password));
     }
 
     @Operation(
@@ -62,7 +62,7 @@ public class UsuarioController {
             @RequestParam String email,
             @Parameter(description = "Contraseña", required = true)
             @RequestParam String password) {
-        return ResponseEntity.ok(service.iniciarSesion(email, password));
+        return ResponseEntity.ok(facade.iniciarSesion(email, password));
     }
 
     @Operation(
@@ -78,7 +78,7 @@ public class UsuarioController {
     public ResponseEntity<PerfilInfo> verPerfil(
             @Parameter(description = "ID del usuario", required = true)
             @PathVariable Long id) {
-        return ResponseEntity.ok(service.verPerfil(id));
+        return ResponseEntity.ok(facade.verPerfil(id));
     }
 
     @Operation(
@@ -89,7 +89,7 @@ public class UsuarioController {
     public ResponseEntity<List<PerfilInfo>> listarPerfilesPublicos(
             @Parameter(description = "ID del usuario que consulta", required = true)
             @RequestParam Long usuarioId) {
-        return ResponseEntity.ok(service.listarPerfilesPublicos(usuarioId));
+        return ResponseEntity.ok(facade.listarPerfilesPublicos(usuarioId));
     }
 
     @Operation(
@@ -111,7 +111,7 @@ public class UsuarioController {
             @RequestParam String foto,
             @Parameter(description = "Descripción del canal", example = "Bienvenidos a mi canal")
             @RequestParam String descripcion) {
-        return ResponseEntity.ok(service.editarPerfil(id, nombre, foto, descripcion));
+        return ResponseEntity.ok(facade.editarPerfil(id, nombre, foto, descripcion));
     }
 
     @Operation(
@@ -137,7 +137,7 @@ public class UsuarioController {
             @PathVariable Long id,
             @Parameter(description = "Archivo de imagen (jpg, png, webp)", required = true)
             @RequestPart MultipartFile foto) {
-        return ResponseEntity.ok(service.subirFotoPerfil(id, foto));
+        return ResponseEntity.ok(facade.subirFotoPerfil(id, foto));
     }
 
     @Operation(
@@ -156,7 +156,7 @@ public class UsuarioController {
             @PathVariable Long id,
             @Parameter(description = "Nuevo username único", required = true, example = "mi_nuevo_username")
             @RequestParam String nuevoUsername) {
-        return ResponseEntity.ok(service.cambiarUsername(id, nuevoUsername));
+        return ResponseEntity.ok(facade.cambiarUsername(id, nuevoUsername));
     }
 
     @Operation(
@@ -173,7 +173,7 @@ public class UsuarioController {
     public ResponseEntity<Void> desactivar(
             @Parameter(description = "ID del usuario a desactivar", required = true)
             @PathVariable Long id) {
-        service.desactivarCuenta(id);
+        facade.desactivarCuenta(id);
         return ResponseEntity.noContent().build();
     }
 
