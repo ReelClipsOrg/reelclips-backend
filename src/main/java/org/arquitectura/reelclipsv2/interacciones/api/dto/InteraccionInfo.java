@@ -7,5 +7,6 @@ public record InteraccionInfo(
         String tipo,
         Long usuarioId,
         Long reelId,
-        LocalDateTime fecha
+        LocalDateTime fecha,
+        String contenido
 ) {}

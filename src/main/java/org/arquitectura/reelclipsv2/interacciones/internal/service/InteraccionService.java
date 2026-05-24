@@ -56,7 +56,7 @@ public class InteraccionService {
                 .fechaEvento(LocalDateTime.now())
                 .build());
 
-        return new InteraccionInfo(reaccion.getId(), "LIKE", usuarioId, reelId, reaccion.getFechaCreacion());
+        return new InteraccionInfo(reaccion.getId(), "LIKE", usuarioId, reelId, reaccion.getFechaCreacion(), null);
     }
 
     // RF-13 Eliminar reacción
@@ -100,7 +100,14 @@ public class InteraccionService {
                 .fechaEvento(LocalDateTime.now())
                 .build());
 
-        return new InteraccionInfo(comentario.getId(), "COMENTARIO", usuarioId, reelId, comentario.getFechaCreacion());
+        return new InteraccionInfo(
+                comentario.getId(),
+                "COMENTARIO",
+                usuarioId,
+                reelId,
+                comentario.getFechaCreacion(),
+                comentario.getContenido()
+        );
     }
 
     // RF-15 Eliminar comentario
@@ -122,7 +129,7 @@ public class InteraccionService {
     public List<InteraccionInfo> listarComentarios(Long reelId) {
         return comentarioRepo.findByReelId(reelId).stream()
                 .map(c -> new InteraccionInfo(c.getId(), "COMENTARIO",
-                        c.getUsuario().getId(), c.getReel().getId(), c.getFechaCreacion()))
+                        c.getUsuario().getId(), c.getReel().getId(), c.getFechaCreacion(), c.getContenido()))
                 .toList();
     }
 
