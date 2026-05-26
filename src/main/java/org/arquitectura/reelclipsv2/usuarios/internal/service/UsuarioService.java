@@ -14,6 +14,7 @@ import org.arquitectura.reelclipsv2.usuarios.internal.repository.ICanalRepositor
 import org.arquitectura.reelclipsv2.usuarios.internal.repository.IUsuarioRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDate;
@@ -29,6 +30,7 @@ public class UsuarioService {
     private final SupabaseStorageService storageService;
     private final PasswordEncoder passwordEncoder;
 
+    @Transactional
     public UsuarioInfo registrar(String username, String email, String password) {
         if (usuarioRepo.existsByEmail(email)) {
             throw new ReglaNegocioException("El email ya esta registrado: " + email);
