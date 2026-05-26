@@ -6,6 +6,8 @@ import org.springframework.http.HttpStatusCode;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.reactive.function.client.WebClient;
+
+import java.util.Locale;
 import java.util.UUID;
 
 @Service
@@ -29,12 +31,10 @@ public class SupabaseStorageService {
         this.webClient = WebClient.builder().build();
     }
 
-    // Subir video de reel
     public String subirVideo(MultipartFile archivo) {
         return subir(archivo, bucketReels, "video/mp4");
     }
 
-    // Subir imagen de perfil
     public String subirImagenPerfil(MultipartFile archivo) {
         return subir(archivo, bucketImagenes, archivo.getContentType());
     }
@@ -47,7 +47,6 @@ public class SupabaseStorageService {
         eliminar(url, bucketImagenes);
     }
 
-    // Eliminar archivo
     private void eliminar(String url, String bucket) {
         String nombreArchivo = extraerNombreArchivo(url);
         webClient.delete()
@@ -61,7 +60,7 @@ public class SupabaseStorageService {
 
     private String subir(MultipartFile archivo, String bucket, String contentType) {
         try {
-            String nombreArchivo = UUID.randomUUID() + "_" + archivo.getOriginalFilename();
+            String nombreArchivo = construirNombreSeguro(archivo.getOriginalFilename());
             byte[] bytes = archivo.getBytes();
 
             webClient.post()
@@ -85,6 +84,25 @@ public class SupabaseStorageService {
         } catch (Exception e) {
             throw new RuntimeException("Error al subir archivo a Supabase: " + e.getMessage());
         }
+    }
+
+    private String construirNombreSeguro(String nombreOriginal) {
+        String extension = extraerExtension(nombreOriginal);
+        return UUID.randomUUID() + extension;
+    }
+
+    private String extraerExtension(String nombreOriginal) {
+        if (nombreOriginal == null || nombreOriginal.isBlank()) {
+            return "";
+        }
+
+        int ultimoPunto = nombreOriginal.lastIndexOf('.');
+        if (ultimoPunto < 0 || ultimoPunto == nombreOriginal.length() - 1) {
+            return "";
+        }
+
+        String extension = nombreOriginal.substring(ultimoPunto).toLowerCase(Locale.ROOT);
+        return extension.matches("\\.[a-z0-9]+") ? extension : "";
     }
 
     private String extraerNombreArchivo(String url) {

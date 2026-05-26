@@ -12,6 +12,8 @@ import org.arquitectura.reelclipsv2.usuarios.internal.model.Canal;
 import org.arquitectura.reelclipsv2.usuarios.internal.model.Usuario;
 import org.arquitectura.reelclipsv2.usuarios.internal.repository.ICanalRepository;
 import org.arquitectura.reelclipsv2.usuarios.internal.repository.IUsuarioRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,6 +26,8 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class UsuarioService {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(UsuarioService.class);
 
     private final IUsuarioRepository usuarioRepo;
     private final ICanalRepository canalRepo;
@@ -80,12 +84,19 @@ public class UsuarioService {
 
     public UsuarioInfo subirFotoPerfil(Long id, MultipartFile archivo) {
         Usuario usuario = buscar(id);
-        if (usuario.getFotoPerfil() != null && !usuario.getFotoPerfil().isBlank()) {
-            storageService.eliminarImagenPerfil(usuario.getFotoPerfil());
+        String fotoAnterior = usuario.getFotoPerfil();
+        String nuevaFotoUrl = storageService.subirImagenPerfil(archivo);
+
+        try {
+            usuario.setFotoPerfil(nuevaFotoUrl);
+            Usuario usuarioActualizado = usuarioRepo.save(usuario);
+
+            eliminarFotoAnteriorSilenciosamente(fotoAnterior, nuevaFotoUrl, id);
+            return toInfo(usuarioActualizado);
+        } catch (RuntimeException ex) {
+            eliminarNuevaFotoSilenciosamente(nuevaFotoUrl, id);
+            throw ex;
         }
-        String url = storageService.subirImagenPerfil(archivo);
-        usuario.setFotoPerfil(url);
-        return toInfo(usuarioRepo.save(usuario));
     }
 
     public UsuarioInfo cambiarUsername(Long id, String nuevoUsername) {
@@ -158,6 +169,26 @@ public class UsuarioService {
         }
 
         return false;
+    }
+
+    private void eliminarFotoAnteriorSilenciosamente(String fotoAnterior, String nuevaFotoUrl, Long usuarioId) {
+        if (fotoAnterior == null || fotoAnterior.isBlank() || fotoAnterior.equals(nuevaFotoUrl)) {
+            return;
+        }
+
+        try {
+            storageService.eliminarImagenPerfil(fotoAnterior);
+        } catch (RuntimeException ex) {
+            LOGGER.warn("No se pudo eliminar la foto anterior del usuario {}", usuarioId, ex);
+        }
+    }
+
+    private void eliminarNuevaFotoSilenciosamente(String nuevaFotoUrl, Long usuarioId) {
+        try {
+            storageService.eliminarImagenPerfil(nuevaFotoUrl);
+        } catch (RuntimeException cleanupEx) {
+            LOGGER.warn("No se pudo limpiar la nueva foto del usuario {} despues de un fallo", usuarioId, cleanupEx);
+        }
     }
 
     private PerfilInfo toPerfilInfo(Usuario usuario) {
