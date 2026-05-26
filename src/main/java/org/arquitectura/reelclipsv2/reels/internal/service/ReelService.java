@@ -108,7 +108,7 @@ public class ReelService {
     }
 
     private Reel buscar(Long id) {
-        return reelRepo.findById(id)
+        return reelRepo.findDetalleById(id)
                 .orElseThrow(() -> new RecursoNoEncontradoException("Reel no encontrado: " + id));
     }
 

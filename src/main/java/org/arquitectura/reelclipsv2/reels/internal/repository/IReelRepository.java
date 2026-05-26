@@ -1,6 +1,5 @@
 package org.arquitectura.reelclipsv2.reels.internal.repository;
 
-
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.arquitectura.reelclipsv2.reels.internal.model.Reel;
 import org.arquitectura.reelclipsv2.shared.enums.EstadoReel;
@@ -10,7 +9,7 @@ import java.util.Optional;
 
 public interface IReelRepository extends JpaRepository<Reel, Long> {
     @EntityGraph(attributePaths = {"categorias", "canal", "canal.usuario"})
-    Optional<Reel> findById(Long id);
+    Optional<Reel> findDetalleById(Long id);
 
     @EntityGraph(attributePaths = {"categorias", "canal", "canal.usuario"})
     List<Reel> findByEstado(EstadoReel estado);
