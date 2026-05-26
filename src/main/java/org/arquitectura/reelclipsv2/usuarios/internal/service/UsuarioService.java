@@ -12,6 +12,7 @@ import org.arquitectura.reelclipsv2.usuarios.internal.model.Canal;
 import org.arquitectura.reelclipsv2.usuarios.internal.model.Usuario;
 import org.arquitectura.reelclipsv2.usuarios.internal.repository.ICanalRepository;
 import org.arquitectura.reelclipsv2.usuarios.internal.repository.IUsuarioRepository;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -26,19 +27,20 @@ public class UsuarioService {
     private final IUsuarioRepository usuarioRepo;
     private final ICanalRepository canalRepo;
     private final SupabaseStorageService storageService;
+    private final PasswordEncoder passwordEncoder;
 
     public UsuarioInfo registrar(String username, String email, String password) {
         if (usuarioRepo.existsByEmail(email)) {
-            throw new ReglaNegocioException("El email ya está registrado: " + email);
+            throw new ReglaNegocioException("El email ya esta registrado: " + email);
         }
         if (usuarioRepo.existsByUsername(username)) {
-            throw new ReglaNegocioException("El username ya está en uso: " + username);
+            throw new ReglaNegocioException("El username ya esta en uso: " + username);
         }
 
         Usuario usuario = Usuario.builder()
                 .username(username)
                 .email(email)
-                .passwordHash(password)
+                .passwordHash(passwordEncoder.encode(password))
                 .nombreVisualizacion(username)
                 .estadoCuenta(EstadoCuenta.ACTIVA)
                 .fechaRegistro(LocalDateTime.now())
@@ -57,11 +59,11 @@ public class UsuarioService {
     public UsuarioInfo iniciarSesion(String email, String password) {
         Usuario usuario = usuarioRepo.findByEmail(email)
                 .orElseThrow(() -> new RecursoNoEncontradoException("Usuario no encontrado"));
-        if (!usuario.getPasswordHash().equals(password)) {
+        if (!coincidePassword(usuario, password)) {
             throw new AccesoDenegadoException("Credenciales incorrectas");
         }
         if (usuario.getEstadoCuenta() == EstadoCuenta.DESACTIVADA) {
-            throw new AccesoDenegadoException("La cuenta está desactivada");
+            throw new AccesoDenegadoException("La cuenta esta desactivada");
         }
         return toInfo(usuario);
     }
@@ -88,10 +90,10 @@ public class UsuarioService {
         Usuario usuario = buscar(id);
         if (usuario.getUltimoCambioUsername() != null &&
                 usuario.getUltimoCambioUsername().plusDays(30).isAfter(LocalDate.now())) {
-            throw new ReglaNegocioException("Solo puedes cambiar el username una vez cada 30 días");
+            throw new ReglaNegocioException("Solo puedes cambiar el username una vez cada 30 dias");
         }
         if (usuarioRepo.existsByUsername(nuevoUsername)) {
-            throw new ReglaNegocioException("El username ya está en uso: " + nuevoUsername);
+            throw new ReglaNegocioException("El username ya esta en uso: " + nuevoUsername);
         }
         usuario.setUsername(nuevoUsername);
         usuario.setUltimoCambioUsername(LocalDate.now());
@@ -105,7 +107,7 @@ public class UsuarioService {
 
     public List<PerfilInfo> listarPerfilesPublicos(Long usuarioId) {
         if (!estaActivo(usuarioId)) {
-            throw new AccesoDenegadoException("Debes tener una cuenta activa para consultar perfiles públicos");
+            throw new AccesoDenegadoException("Debes tener una cuenta activa para consultar perfiles publicos");
         }
 
         return usuarioRepo.findByEstadoCuentaAndIdNot(EstadoCuenta.ACTIVA, usuarioId)
@@ -138,6 +140,22 @@ public class UsuarioService {
     private Usuario buscar(Long id) {
         return usuarioRepo.findById(id)
                 .orElseThrow(() -> new RecursoNoEncontradoException("Usuario no encontrado: " + id));
+    }
+
+    private boolean coincidePassword(Usuario usuario, String password) {
+        String passwordGuardado = usuario.getPasswordHash();
+
+        if (passwordEncoder.matches(password, passwordGuardado)) {
+            return true;
+        }
+
+        if (passwordGuardado.equals(password)) {
+            usuario.setPasswordHash(passwordEncoder.encode(password));
+            usuarioRepo.save(usuario);
+            return true;
+        }
+
+        return false;
     }
 
     private PerfilInfo toPerfilInfo(Usuario usuario) {
