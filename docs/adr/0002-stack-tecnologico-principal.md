@@ -1,7 +1,7 @@
 # ADR-0002: Seleccionar el stack tecnológico principal
 
 - **Status:** Accepted
-- **Fecha:** 2026-05-24
+- **Fecha:** 2026-05-26
 - **Autores:** Equipo ReelClips
 
 ---
@@ -21,6 +21,16 @@ Se adopta el siguiente stack tecnológico:
 - **Base de datos:** PostgreSQL
 - **Caché:** Redis
 - **Almacenamiento multimedia:** Supabase Storage
+
+---
+
+## Opciones evaluadas
+
+| Opción                    | Ventajas                                      | Desventajas                                   | Decisión   |
+|---------------------------|-----------------------------------------------|-----------------------------------------------|------------|
+| **Spring Boot + Next.js** | Madurez, buen soporte y experiencia del equipo | -                                             | **Aceptada** |
+| NestJS + React            | Buena estructura y TypeScript nativo          | Menor experiencia del equipo                  | Rechazada  |
+| Django + React            | Desarrollo rápido                             | Menor rendimiento esperado                    | Rechazada  |
 
 ---
 
