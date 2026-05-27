@@ -1,7 +1,7 @@
 # ADR-0003: Aplicar patrón Facade para el feed
 
 - **Status:** Accepted
-- **Fecha:** 2026-05-24
+- **Fecha:** 2026-05-26
 - **Autores:** Equipo ReelClips
 
 ---
@@ -18,6 +18,15 @@ Se implementa el patrón **Facade** mediante un componente central encargado de 
 
 ---
 
+## Opciones evaluadas
+
+| Opción                              | Ventajas                          | Desventajas                        | Decisión   |
+|-------------------------------------|-----------------------------------|------------------------------------|------------|
+| Lógica directamente en el Controller| Simple de implementar             | Alta complejidad y acoplamiento    | Rechazada  |
+| **Facade + Servicios especializados** | Bajo acoplamiento y alta cohesión | Requiere más clases                | **Aceptada** |
+| Lógica distribuida entre servicios  | -                                 | Difícil de mantener y testear      | Rechazada  |
+
+---
 ## Consecuencias
 
 ### Positivas
