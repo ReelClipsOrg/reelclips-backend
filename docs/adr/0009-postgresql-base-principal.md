@@ -1,7 +1,7 @@
 # ADR-0009: Usar PostgreSQL como base de datos principal
 
 - **Status:** Accepted
-- **Fecha:** 2026-05-24
+- **Fecha:** 2026-05-26
 - **Autores:** Equipo ReelClips
 
 ---
@@ -18,6 +18,15 @@ Se utilizará **PostgreSQL** como base de datos principal para toda la informaci
 
 ---
 
+## Opciones evaluadas
+
+| Opción          | Ventajas                           | Desventajas                        | Decisión   |
+|-----------------|------------------------------------|------------------------------------|------------|
+| MySQL           | Muy popular y maduro               | Menor soporte avanzado de consultas| Rechazada  |
+| **PostgreSQL**  | Excelente soporte relacional y JSON| -                                  | **Aceptada** |
+| MongoDB         | Alta flexibilidad                  | Pierde integridad referencial      | Rechazada  |
+
+---
 ## Consecuencias
 
 ### Positivas
