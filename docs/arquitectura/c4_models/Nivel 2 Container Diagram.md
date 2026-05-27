@@ -33,7 +33,7 @@ flowchart LR
  
     API -->|"Lee y escribe datos [JDBC / JPA]"| PG
  
-    API -->|"Consulta y actualiza caché [TCP]"| REDIS
+    API -->|"Consulta y actualiza caché [TCP]"| CACHÉ
  
     API -->|"Sube y recupera multimedia [HTTPS / REST]"| SUPA
 ```
