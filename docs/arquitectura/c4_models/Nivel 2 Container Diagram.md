@@ -87,7 +87,7 @@ Cada módulo mantiene responsabilidades separadas para reducir acoplamiento y me
 ## 1. Consumo de contenido
 1. El usuario accede al frontend.
 2. El frontend solicita el feed al backend.
-3. El backend consulta PostgreSQL y Redis.
+3. El backend consulta PostgreSQL y caché.
 4. Los reels son recuperados desde Supabase Storage.
  
 ## 2. Publicación de reels
@@ -99,7 +99,7 @@ Cada módulo mantiene responsabilidades separadas para reducir acoplamiento y me
 ## 3. Interacciones sociales
 1. El usuario da like o comenta.
 2. El backend registra la interacción.
-3. Redis puede actualizar métricas temporales.
+3. La caché puede actualizar métricas temporales.
 4. PostgreSQL persiste los cambios.
  
 ## 4. Chat en tiempo real
