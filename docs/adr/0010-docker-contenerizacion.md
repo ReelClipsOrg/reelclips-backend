@@ -1,7 +1,7 @@
 # ADR-0010: Contenerizar la aplicación con Docker
 
 - **Status:** Accepted
-- **Fecha:** 2026-05-24
+- **Fecha:** 2026-05-26
 - **Autores:** Equipo ReelClips
 
 ---
@@ -18,6 +18,15 @@ Se utilizará **Docker** para contenerizar el backend, el frontend y los servici
 
 ---
 
+## Opciones evaluadas
+
+| Opción                    | Ventajas                           | Desventajas                      | Decisión   |
+|---------------------------|------------------------------------|----------------------------------|------------|
+| Ejecutar directamente     | Sin overhead                       | Problemas de consistencia        | Rechazada  |
+| **Docker + Compose**      | Alta reproducibilidad              | Curva de aprendizaje inicial     | **Aceptada** |
+| Solo Docker (sin Compose) | -                                  | Mayor trabajo manual             | Rechazada  |
+
+---
 ## Consecuencias
 
 ### Positivas
