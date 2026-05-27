@@ -1,7 +1,7 @@
 # ADR-0006: Implementar chat en tiempo real con WebSocket
 
 - **Status:** Accepted
-- **Fecha:** 2026-05-24
+- **Fecha:** 2026-05-26
 - **Autores:** Equipo ReelClips
 
 ---
@@ -18,6 +18,15 @@ Se implementa el chat utilizando **WebSocket** para comunicación bidireccional 
 
 ---
 
+## Opciones evaluadas
+
+| Opción              | Ventajas                      | Desventajas                    | Decisión   |
+|---------------------|-------------------------------|--------------------------------|------------|
+| Polling REST        | Muy simple                    | Alta latencia y consumo        | Rechazada  |
+| **WebSocket + STOMP** | Baja latencia y bidireccional | Mayor complejidad de conexión  | **Aceptada** |
+| Server-Sent Events  | Simple                        | Solo comunicación unidireccional | Rechazada  |
+
+---
 ## Consecuencias
 
 ### Positivas

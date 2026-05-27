@@ -1,7 +1,7 @@
 # ADR-0005: Aplicar patrón Observer para interacciones
 
 - **Status:** Accepted
-- **Fecha:** 2026-05-24
+- **Fecha:** 2026-05-26
 - **Autores:** Equipo ReelClips
 
 ---
@@ -18,6 +18,15 @@ Se implementa el patrón **Observer**, permitiendo que diferentes observadores r
 
 ---
 
+## Opciones evaluadas
+
+| Opción                          | Ventajas                        | Desventajas                       | Decisión   |
+|---------------------------------|---------------------------------|-----------------------------------|------------|
+| Llamadas directas               | Simple                          | Alto acoplamiento                 | Rechazada  |
+| **Observer / Event Publisher**  | Bajo acoplamiento y extensibilidad | Flujo de ejecución menos lineal | **Aceptada** |
+| Message Broker externo          | Muy desacoplado                 | Sobrecarga para el alcance actual | Rechazada  |
+
+---
 ## Consecuencias
 
 ### Positivas
