@@ -1,7 +1,7 @@
 # ADR-0005: Aplicar patrón Observer para interacciones
 
 - **Status:** Accepted
-- **Fecha:** 2026-05-24
+- **Fecha:** 2026-05-26
 - **Autores:** Equipo ReelClips
 
 ---
