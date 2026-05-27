@@ -1,7 +1,7 @@
 # ADR-0008: Usar Redis como caché para feed y consultas frecuentes
 
 - **Status:** Accepted
-- **Fecha:** 2026-05-24
+- **Fecha:** 2026-05-26
 - **Autores:** Equipo ReelClips
 
 ---
@@ -18,6 +18,15 @@ Se utilizará **Redis** como caché en memoria para almacenar resultados frecuen
 
 ---
 
+## Opciones evaluadas
+
+| Opción             | Ventajas                  | Desventajas                   | Decisión   |
+|--------------------|---------------------------|-------------------------------|------------|
+| Solo PostgreSQL    | Simplicidad               | Mayor latencia en consultas   | Rechazada  |
+| **Redis como caché** | Baja latencia             | Requiere estrategia de invalidación | **Aceptada** |
+| Hazelcast          | Más funcionalidades       | Mayor complejidad             | Rechazada  |
+
+---
 ## Consecuencias
 
 ### Positivas
