@@ -19,7 +19,6 @@ Se adopta el siguiente stack tecnológico:
 - **Frontend:** Next.js + TypeScript
 - **Backend:** Spring Boot + Java 17
 - **Base de datos:** PostgreSQL
-- **Caché:** Redis
 - **Almacenamiento multimedia:** Supabase Storage
 
 ---
@@ -41,11 +40,10 @@ Se adopta el siguiente stack tecnológico:
 - Next.js facilita una experiencia rápida y moderna.
 - Spring Boot simplifica la creación de APIs REST.
 - PostgreSQL soporta adecuadamente relaciones complejas.
-- Redis mejora tiempos de respuesta del feed.
+- Caché mejora tiempos de respuesta del feed.
 - Supabase desacopla multimedia de la base transaccional.
 
 ### Negativas
 
 - Incremento en la cantidad de tecnologías a administrar.
-- Redis requiere políticas de expiración e invalidación.
 - Dependencia externa para almacenamiento multimedia.
