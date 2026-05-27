@@ -21,16 +21,16 @@ flowchart LR
     RC[ReelClips<br/><i>Sistema de software</i><br/>Plataforma de videos cortos e interacciones]:::system
  
     SUPA[Supabase Storage<br/><i>Sistema externo</i><br/>Guarda videos e imágenes]:::external
-    DB[(PostgreSQL<br/><i>Sistema externo</i><br/>Datos relacionales del dominio)]:::external
+    DB[(Base de Datos PostgreSQL<br/><i>Sistema externo</i><br/>Datos relacionales del dominio)]:::external
     CACHÉ[(Caché<br/><i>Sistema externo</i><br/>Caché de contenido frecuente)]:::external
  
-    U1 -->|HTTPS| RC
-    U2 -->|HTTPS| RC
-    ADM -->|HTTPS| RC
+    U1 -->|Visualiza| RC
+    U2 -->|Consume| RC
+    ADM -->|Gestiona| RC
  
-    RC -->|HTTPS / REST| SUPA
-    RC -->|JDBC / JPA| DB
-    RC -->|TCP / caché| CACHÉ
+    RC -->|Guarda| SUPA
+    RC -->|Almacena| DB
+    RC -->|Consulta| CACHÉ
  
     note1["Límite del sistema:<br/>ReelClips incluye frontend + backend.<br/>Usuarios y servicios externos están fuera."]:::note
     RC -.-> note1
