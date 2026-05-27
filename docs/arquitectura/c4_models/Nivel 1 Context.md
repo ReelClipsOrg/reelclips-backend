@@ -22,7 +22,7 @@ flowchart LR
  
     SUPA[Supabase Storage<br/><i>Sistema externo</i><br/>Guarda videos e imágenes]:::external
     DB[(PostgreSQL<br/><i>Sistema externo</i><br/>Datos relacionales del dominio)]:::external
-    REDIS[(Redis<br/><i>Sistema externo</i><br/>Caché de contenido frecuente)]:::external
+    CACHÉ[(Caché<br/><i>Sistema externo</i><br/>Caché de contenido frecuente)]:::external
  
     U1 -->|HTTPS| RC
     U2 -->|HTTPS| RC
@@ -30,7 +30,7 @@ flowchart LR
  
     RC -->|HTTPS / REST| SUPA
     RC -->|JDBC / JPA| DB
-    RC -->|TCP / caché| REDIS
+    RC -->|TCP / caché| CACHÉ
  
     note1["Límite del sistema:<br/>ReelClips incluye frontend + backend.<br/>Usuarios y servicios externos están fuera."]:::note
     RC -.-> note1
@@ -59,5 +59,5 @@ flowchart LR
 | Sistema | Responsabilidad |
 |---|---|
 | PostgreSQL | Persistencia de datos relacionales |
-| Redis | Caché para optimizar consultas frecuentes |
+| Caché | Caché para optimizar consultas frecuentes |
 | Supabase Storage | Almacenamiento multimedia de videos e imágenes |
